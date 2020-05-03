@@ -1,4 +1,5 @@
 {
     
-    "mongoURI": "mongodb+srv://neel123:neel123@mycluster-lwezh.mongodb.net/test?retryWrites=true&w=majority"
+    "mongoURI": "mongodb+srv://neel123:neel123@mycluster-lwezh.mongodb.net/test?retryWrites=true&w=majority",
+    "jwttoken": "palakpanner"
 }
