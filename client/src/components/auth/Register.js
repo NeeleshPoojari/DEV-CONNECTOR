@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
-
+import {Link} from 'react-router-dom';
+//import axios from "axios";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -11,16 +12,37 @@ const Register = () => {
 
   const { name, email, password, password2 } = formData;
 
-  const onChangeField = (e) => setFormData({ ...formData,[e.target.name]: e.target.value });
-  const onSubmitForm = (e) => {
-      e.preventDefault();
-      if(password !== password2) {
-          console.log("Password do not match")
-      } else {
-          console.log(formData)
-      }
-  }
+  const onChangeField = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const onSubmitForm =  async (e) => {
+    e.preventDefault();
+    if (password !== password2) {
+      console.log("Password do not match");
+    } else {
+    //   const newUser = {
+    //     name,
+    //     email,
+    //     password,
+    //   };
 
+    //   try {
+    //       const config = {
+    //           headers: {
+    //               'Content-Type': 'application/json'
+    //             }
+    //           };
+
+    //           const body = JSON.stringify(newUser);
+
+    //         const res = await axios.post('/api/users', body, config);
+    //         console.log(res);
+            
+    //   } catch (error) {
+    //       console.log(error.response.data);
+    //   }
+      console.log("Success");
+    }
+  };
 
   return (
     <Fragment>
@@ -28,14 +50,14 @@ const Register = () => {
       <p className="lead">
         <i className="fas fa-user"></i> Create Your Account
       </p>
-      <form className="form" onSubmit = {e => onSubmitForm(e)}>
+      <form className="form" onSubmit={(e) => onSubmitForm(e)}>
         <div className="form-group">
           <input
             type="text"
             placeholder="Name"
             name="name"
             value={name}
-            onChange = {e => onChangeField(e)}
+            onChange={(e) => onChangeField(e)}
             required
           />
         </div>
@@ -45,7 +67,7 @@ const Register = () => {
             placeholder="Email Address"
             name="email"
             value={email}
-            onChange = {e => onChangeField(e)}
+            onChange={(e) => onChangeField(e)}
             required
           />
           <small className="form-text">
@@ -60,7 +82,7 @@ const Register = () => {
             name="password"
             minLength="6"
             value={password}
-            onChange = {e => onChangeField(e)}
+            onChange={(e) => onChangeField(e)}
             required
           />
         </div>
@@ -71,14 +93,14 @@ const Register = () => {
             name="password2"
             minLength="6"
             value={password2}
-            onChange = {e => onChangeField(e)}
+            onChange={(e) => onChangeField(e)}
             required
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Register" />
       </form>
       <p className="my-1">
-        Already have an account? <a href="login.html">Sign In</a>
+        Already have an account? <Link to="/login">Sign In</Link>
       </p>
     </Fragment>
   );
