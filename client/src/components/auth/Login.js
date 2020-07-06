@@ -1,18 +1,17 @@
 import React, { Fragment, useState } from "react";
-import {Link} from 'react-router-dom';
-
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
     email: "",
-    password: ""
+    password: "",
   });
 
   const { email, password } = formData;
 
   const onChangeField = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  const onSubmitForm =  async (e) => {
+  const onSubmitForm = async (e) => {
     e.preventDefault();
     console.log("Sucess");
   };
