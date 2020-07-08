@@ -1,10 +1,13 @@
 import React, { Fragment, useState } from "react";
 import { connect } from 'react-redux';
-import setAlert from '../../actions/alert';
-import { Link } from "react-router-dom";
-//import axios from "axios";
+import {setAlert} from '../../actions/alert';
+import { register } from '../../actions/auth';
+import { Link, Redirect } from "react-router-dom";
+import PropTypes from 'prop-types'
 
-const Register = ({setAlert}) => {
+ //import axios from "axios";
+
+const Register = ({setAlert, register, isAuthenticated}) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -16,15 +19,21 @@ const Register = ({setAlert}) => {
 
   const onChangeField = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
     if (password !== password2) {
       console.log("Password do not match");
       setAlert('Password do not match', 'danger');
     } else {
-
+      register({name, email, password});
     }
   };
+
+  if(isAuthenticated){
+    return <Redirect to='/dashboard' />
+  }
 
   return (
     <Fragment>
@@ -40,7 +49,6 @@ const Register = ({setAlert}) => {
             name="name"
             value={name}
             onChange={(e) => onChangeField(e)}
-            required
           />
         </div>
         <div className="form-group">
@@ -50,7 +58,6 @@ const Register = ({setAlert}) => {
             name="email"
             value={email}
             onChange={(e) => onChangeField(e)}
-            required
           />
           <small className="form-text">
             This site uses Gravatar so if you want a profile image, use a
@@ -62,10 +69,8 @@ const Register = ({setAlert}) => {
             type="password"
             placeholder="Password"
             name="password"
-            minLength="6"
             value={password}
             onChange={(e) => onChangeField(e)}
-            required
           />
         </div>
         <div className="form-group">
@@ -73,10 +78,8 @@ const Register = ({setAlert}) => {
             type="password"
             placeholder="Confirm Password"
             name="password2"
-            minLength="6"
             value={password2}
             onChange={(e) => onChangeField(e)}
-            required
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Register" />
@@ -88,8 +91,20 @@ const Register = ({setAlert}) => {
   );
 };
 
-const mapDispatchToProps = dispatch => ({
- setAlert: (msg,alertType) => dispatch(setAlert(msg,alertType))
+
+
+Register.propTypes = {
+
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
+}
+const mapStateToProp = state => ({
+  isAuthenticated : state.auth.isAuthenticated
 });
 
-export default connect(null, mapDispatchToProps)(Register);
+// const mapDispatchToProps = dispatch => ({
+//  setAlert: (msg,alertType) => dispatch(setAlert(msg,alertType))
+// });
+
+export default connect(mapStateToProp, {setAlert, register})(Register);
