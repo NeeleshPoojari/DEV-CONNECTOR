@@ -110,7 +110,7 @@ router.post('/', [auth, [
         console.log("create")
 
         await profile.save();
-        // res.json(profile);
+        res.json(profile);
 
     } catch (error) {
         console.log(error.message);

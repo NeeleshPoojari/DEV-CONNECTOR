@@ -14,8 +14,8 @@ Alert.propTypes = {
     alerts: PropTypes.array
 
 }
-const mapStateToProp = state => ({
+const mapStateToProps = state => ({
     alerts: state.alert
 })
 
-export default connect(mapStateToProp)(Alert)
+export default connect(mapStateToProps)(Alert)
