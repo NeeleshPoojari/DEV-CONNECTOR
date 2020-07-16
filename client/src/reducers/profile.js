@@ -14,6 +14,8 @@ export default function (state = initialState, action) {
 
     switch(type) {
         case Types.GET_PROFILE:
+        case Types.USER_LOADED:
+        case Types.UPDATE_PROFILE:
             return {
                 ...state,
                 profile: payload,

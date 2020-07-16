@@ -34,6 +34,7 @@ export default function (state = initialState, action) {
         case Types.AUTH_ERROR:
         case Types.LOGIN_FAIL:
         case Types.LOGOUT:
+        case Types.ACCOUNT_DELETE:
           localStorage.removeItem('token');
           return {
               ...state,
