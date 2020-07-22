@@ -21,6 +21,76 @@ export const getCurrentProfile = () => async (dispatch) => {
   }
 };
 
+
+//get all profile
+
+export const getProfiles = () => async (dispatch) => {
+  dispatch({ type: Types.CLEAR_PROFILE });
+  
+  try {
+    const res = await axios.get("/api/profile");
+    console.log("Lele bsdk ")
+    dispatch({
+      type: Types.GET_PROFILES,
+      payload: res.data,
+    });
+    console.log("Le liya bsdk ")
+  } catch (err) {
+    dispatch({
+      type: Types.PROFILE_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+//get profile by id
+
+export const getProfilesById = (userId) => async (dispatch) => {
+  dispatch({ type: Types.CLEAR_PROFILE });
+  
+  try {
+    const res = await axios.get(`/api/profile/user/${userId}`);
+
+    dispatch({
+      type: Types.GET_PROFILE,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: Types.PROFILE_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
+//get github repos
+
+export const getGithubRepos = (username) => async (dispatch) => {
+  
+  try {
+    const res = await axios.get(`/api/profile/github/${username}`);
+
+    dispatch({
+      type: Types.GET_REPOS,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: Types.PROFILE_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status,
+      },
+    });
+  }
+};
+
 // create or update profile
 
 export const createProfile = (formData, history, edit = false) => async (
@@ -169,7 +239,7 @@ export const deleteAccount = id =>async dispatch => {
 
   }
   try {
-    const res = await axios.delete('/api/profile');
+    await axios.delete('/api/profile');
 
     dispatch({
       type: Types.CLEAR_PROFILE

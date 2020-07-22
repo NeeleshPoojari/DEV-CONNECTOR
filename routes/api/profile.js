@@ -21,7 +21,7 @@ router.get("/me", auth, async (req, res) => {
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
     }
-    res.json(profile);
+    return res.json(profile);
   } catch (error) {
     console.log(error.message);
     return res.status(500).send("Server Error");
@@ -107,10 +107,10 @@ router.post(
       console.log("create");
 
       await profile.save();
-      res.json(profile);
+     return  res.json(profile);
     } catch (error) {
       console.log(error.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     }
   }
 );
@@ -122,10 +122,11 @@ router.post(
 router.get("/", async (req, res) => {
   try {
     const profiles = await Profile.find().populate("user", ["name", "avatar"]);
-    res.json(profiles);
+    return res.json(profiles);
   } catch (error) {
+
     console.log(error.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 
@@ -141,13 +142,13 @@ router.get("/user/:user_id", async (req, res) => {
 
     if (!profile) return res.status(400).json({ msg: "profile not found" });
 
-    res.json(profile);
+    return res.json(profile);
   } catch (error) {
     console.log(error); //issue
     if (error.kind == "ObjectId") {
       return res.status(400).json({ msg: "profile not found" });
     }
-    res.status(500).send("Server Error");
+   return res.status(500).send("Server Error");
   }
 });
 
@@ -165,10 +166,10 @@ router.delete("/", auth, async (req, res) => {
     //delete user
     await User.findOneAndRemove({ _id: req.user.id });
 
-    res.json({ msg: "User deleted" });
+    return res.json({ msg: "User deleted" });
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Server Error");
+    return res.status(500).send("Server Error");
   }
 });
 
@@ -221,10 +222,10 @@ router.put(
 
       await profile.save();
 
-      res.json(profile);
+      return res.json(profile);
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server Error");
+      return res.status(500).send("Server Error");
     }
   }
 );
