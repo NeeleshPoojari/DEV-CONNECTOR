@@ -145,6 +145,7 @@ router.put('/like/:id', auth, async (req, res) => {
 // @route    PUT api/posts/unlike/:id
 // @desc     Unlike a post
 // @access   Private
+
 router.put('/unlike/:id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -171,6 +172,7 @@ router.put('/unlike/:id', auth, async (req, res) => {
 // @route    POST api/posts/comment/:id
 // @desc     Comment on a post
 // @access   Private
+
 router.post(
   '/comment/:id',
   [
@@ -209,6 +211,7 @@ router.post(
 // @route    DELETE api/posts/comment/:id/:comment_id
 // @desc     Delete comment
 // @access   Private
+
 router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
@@ -242,6 +245,7 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
 // @route    PUT api/posts/like/:id
 // @desc     Like a post
 // @access   Private
+
 router.put('/like/:id', auth, async (req, res) => {
     try {
       const post = await Post.findById(req.params.id);
@@ -265,6 +269,7 @@ router.put('/like/:id', auth, async (req, res) => {
   // @route    PUT api/posts/unlike/:id
   // @desc     Unlike a post
   // @access   Private
+
   router.put('/unlike/:id', auth, async (req, res) => {
     try {
       const post = await Post.findById(req.params.id);
@@ -291,6 +296,7 @@ router.put('/like/:id', auth, async (req, res) => {
   // @route    POST api/posts/comment/:id
   // @desc     Comment on a post
   // @access   Private
+
   router.post(
     '/comment/:id',
     [
@@ -329,6 +335,7 @@ router.put('/like/:id', auth, async (req, res) => {
   // @route    DELETE api/posts/comment/:id/:comment_id
   // @desc     Delete comment
   // @access   Private
+  
   router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
     try {
       const post = await Post.findById(req.params.id);
