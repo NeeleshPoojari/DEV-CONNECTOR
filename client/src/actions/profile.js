@@ -29,12 +29,10 @@ export const getProfiles = () => async (dispatch) => {
   
   try {
     const res = await axios.get("/api/profile");
-    console.log("Lele bsdk ")
     dispatch({
       type: Types.GET_PROFILES,
       payload: res.data,
     });
-    console.log("Le liya bsdk ")
   } catch (err) {
     dispatch({
       type: Types.PROFILE_ERROR,
@@ -48,16 +46,18 @@ export const getProfiles = () => async (dispatch) => {
 
 //get profile by id
 
-export const getProfilesById = (userId) => async (dispatch) => {
-  dispatch({ type: Types.CLEAR_PROFILE });
+export const getProfileById = (userId) => async (dispatch) => {
   
   try {
     const res = await axios.get(`/api/profile/user/${userId}`);
+
+    console.log("BYID,", res)
 
     dispatch({
       type: Types.GET_PROFILE,
       payload: res.data,
     });
+    console.log("BYIDone,", res)
   } catch (err) {
     dispatch({
       type: Types.PROFILE_ERROR,
@@ -74,12 +74,15 @@ export const getProfilesById = (userId) => async (dispatch) => {
 export const getGithubRepos = (username) => async (dispatch) => {
   
   try {
-    const res = await axios.get(`/api/profile/github/${username}`);
 
+    console.log("Github action");
+    const res = await axios.get(`/api/profile/github/${username}`);
+    console.log("Github action2121",res);
     dispatch({
       type: Types.GET_REPOS,
       payload: res.data,
     });
+    console.log("Github action2");
   } catch (err) {
     dispatch({
       type: Types.PROFILE_ERROR,
@@ -97,7 +100,6 @@ export const createProfile = (formData, history, edit = false) => async (
   dispatch
 ) => { 
   try {
-    console.log("On createProfile called");
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -110,12 +112,12 @@ export const createProfile = (formData, history, edit = false) => async (
       type: Types.GET_PROFILE,
       payload: res.data,
     });
-    console.log("On createProfile res, ",res ,edit);
+
 
     dispatch(setAlert(edit ? "Profile Updated" : "Profile Created", "success"));
 
     if(!edit) {
-      console.log("History",history);
+  
       history.push('/dashboard');
     }
   } catch (err) {
@@ -164,7 +166,6 @@ export const addExperience = (formData, history) => async dispatch => {
 // Add Education
 export const addEducation = (formData, history) => async dispatch => {
 
-  console.log("Inside my education action")
   try {
     const res = await axios.put('api/profile/education', formData);
 
@@ -235,10 +236,9 @@ export const deleteEducation = id =>async dispatch => {
 
 export const deleteAccount = id =>async dispatch => {
 
-  if(window.confirm('U Sure? Cannot be undone !')){
-
-  }
   try {
+    
+  if(window.confirm('U Sure? Cannot be undone !')){
     await axios.delete('/api/profile');
 
     dispatch({
@@ -250,7 +250,8 @@ export const deleteAccount = id =>async dispatch => {
     })
 
     dispatch(setAlert('Account Deleted permanently'));
-    
+  }
+     
   } catch (err) {
     dispatch({
       type: Types.PROFILE_ERROR,

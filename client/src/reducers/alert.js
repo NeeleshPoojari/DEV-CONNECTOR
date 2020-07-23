@@ -7,7 +7,6 @@ const initialState = []
 export default function( state = initialState, action) {
 
     const { type, payload } = action;
-    console.log("mayload",action);
 
     switch(type) {
         case Types.SET_ALERT:

@@ -12,7 +12,7 @@ const initialState = {
 export default function (state = initialState, action) {
     const { type, payload } = action;
 
-    switch(type) {
+    switch (type) {
         case Types.GET_PROFILE:
         case Types.USER_LOADED:
         case Types.UPDATE_PROFILE:
@@ -20,7 +20,7 @@ export default function (state = initialState, action) {
                 ...state,
                 profile: payload,
                 loading: false,
-                
+
             }
 
         case Types.GET_PROFILES:
@@ -28,13 +28,14 @@ export default function (state = initialState, action) {
                 ...state,
                 profiles: payload,
                 loading: false
-            }    
+            }
 
         case Types.PROFILE_ERROR:
             return {
                 ...state,
                 error: payload,
-                loading: false
+                loading: false, 
+                profile: null
             }
 
         case Types.CLEAR_PROFILE:
@@ -46,6 +47,7 @@ export default function (state = initialState, action) {
             }
 
         case Types.GET_REPOS:
+            console.log("payload", payload);
             return {
                 ...state,
                 repos: payload,

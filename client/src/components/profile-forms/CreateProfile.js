@@ -46,7 +46,6 @@ const CreateProfile = ({ createProfile, history }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("On submit called");
     createProfile(formData, history);
   };
   return (

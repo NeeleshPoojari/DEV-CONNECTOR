@@ -1,5 +1,7 @@
 const express = require("express");
-
+const config = require("config");
+const request = require("request");
+const axios = require("axios");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
@@ -21,10 +23,10 @@ router.get("/me", auth, async (req, res) => {
     if (!profile) {
       return res.status(400).json({ msg: "There is no profile for this user" });
     }
-    return res.json(profile);
+    res.json(profile);
   } catch (error) {
     console.log(error.message);
-    return res.status(500).send("Server Error");
+     res.status(500).send("Server Error");
   }
 });
 
@@ -46,8 +48,6 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
-    console.log("i m here ");
 
     const {
       company,
@@ -86,13 +86,10 @@ router.post(
     if (linkedin) profileFields.social.linkedin = linkedin;
     if (facebook) profileFields.social.facebook = facebook;
     try {
-      console.log("inside try");
       let profile = await Profile.findOne({ user: req.user.id });
 
-      console.log("profile", profile);
 
       if (profile) {
-        console.log("update");
         //update
         profile = await Profile.findOneAndUpdate(
           { user: req.user.id },
@@ -104,13 +101,12 @@ router.post(
       }
       //create
       profile = new Profile(profileFields);
-      console.log("create");
 
       await profile.save();
-     return  res.json(profile);
+      res.json(profile);
     } catch (error) {
       console.log(error.message);
-      return res.status(500).send("Server Error");
+      res.status(500).send("Server Error");
     }
   }
 );
@@ -122,11 +118,11 @@ router.post(
 router.get("/", async (req, res) => {
   try {
     const profiles = await Profile.find().populate("user", ["name", "avatar"]);
-    return res.json(profiles);
+    res.json(profiles);
   } catch (error) {
 
     console.log(error.message);
-    return res.status(500).send("Server Error");
+    res.status(500).send("Server Error");
   }
 });
 
@@ -142,13 +138,14 @@ router.get("/user/:user_id", async (req, res) => {
 
     if (!profile) return res.status(400).json({ msg: "profile not found" });
 
-    return res.json(profile);
+     res.json(profile);
+
   } catch (error) {
     console.log(error); //issue
     if (error.kind == "ObjectId") {
       return res.status(400).json({ msg: "profile not found" });
     }
-   return res.status(500).send("Server Error");
+    res.status(500).send("Server Error");
   }
 });
 
@@ -166,10 +163,10 @@ router.delete("/", auth, async (req, res) => {
     //delete user
     await User.findOneAndRemove({ _id: req.user.id });
 
-    return res.json({ msg: "User deleted" });
+    res.json({ msg: "User deleted" });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).send("Server Error");
+    res.status(500).send("Server Error");
   }
 });
 
@@ -222,10 +219,10 @@ router.put(
 
       await profile.save();
 
-      return res.json(profile);
+      res.json(profile);
     } catch (err) {
       console.error(err.message);
-      return res.status(500).send("Server Error");
+     res.status(500).send("Server Error");
     }
   }
 );
@@ -243,10 +240,10 @@ router.delete("/experience/:exp_id", auth, async (req, res) => {
     );
 
     await foundProfile.save();
-    return res.status(200).json(foundProfile);
+     res.status(200).json(foundProfile);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ msg: "Server error" });
+   res.status(500).json({ msg: "Server error" });
   }
 });
 
@@ -300,10 +297,10 @@ router.put(
 
       await profile.save();
 
-      return res.json(profile);
+      res.json(profile);
     } catch (err) {
       console.error(err.message);
-      return res.status(500).send("Server Error");
+      res.status(500).send("Server Error");
     }
   }
 );
@@ -319,10 +316,10 @@ router.delete("/education/:edu_id", auth, async (req, res) => {
       (edu) => edu._id.toString() !== req.params.edu_id
     );
     await foundProfile.save();
-    return res.status(200).json(foundProfile);
+    res.status(200).json(foundProfile);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ msg: "Server error" });
+   res.status(500).json({ msg: "Server error" });
   }
 });
 
@@ -332,19 +329,45 @@ router.delete("/education/:edu_id", auth, async (req, res) => {
 router.get("/github/:username", async (req, res) => {
   try {
     const uri = encodeURI(
-      `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
+      `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('githubToken')}&client_secret=${config.get('githubToken')}`
     );
+
     const headers = {
       "user-agent": "node.js",
-      Authorization: `token ${config.get("githubToken")}`,
     };
 
     const gitHubResponse = await axios.get(uri, { headers });
-    return res.json(gitHubResponse.data);
+     res.json(gitHubResponse.data);
   } catch (err) {
     console.error(err.message);
-    return res.status(404).json({ msg: "No Github profile found" });
+     res.status(404).json({ msg: "No Github profile found" });
   }
 });
+
+// router.get("/github/:username", (req, res) => {
+//   try {
+//     console.log("Inside github backend");
+
+//     const options = {
+//       uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('githubToken')}&client_secret=${config.get('githubToken')}`,
+//       method: 'GET',
+//       headers: { "user-agent": "node.js" }
+//     }
+
+//     request(options, (error, response, body) => {
+//       if (error) console.error(error);
+
+//       if (response.statusCode !== 200) {
+//         return res.status(404).json({ msg: 'No Github profile found' })
+//       }
+//       res.json(JSON.parse(body));
+
+//     })
+
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send('Server Error')
+//   }
+// });
 
 module.exports = router;

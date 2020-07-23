@@ -4,7 +4,6 @@ import { setAlert } from "./alert";
 import setAuthToken from "../util/setAuthToken";
 
 export const loadUser = () => async (dispatch) => {
-  console.log("Called loaduser BC");
 
   if (localStorage.token) {
     setAuthToken(localStorage.token);

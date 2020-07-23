@@ -40,7 +40,6 @@ const AddEducation = ({ addEducation, history }) => {
         className="form"
         onSubmit={e => {
           e.preventDefault();
-          console.log("Inside my Eduction")
           addEducation(formData, history);
         }}
       >
