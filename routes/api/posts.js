@@ -54,12 +54,11 @@ router.post('/', [auth,
 //@access private , will make public
 
 router.get('/', auth, async (req, res) => {
-
     try {
         const posts = await Post.find().sort({ date: -1 });
         res.json(posts);
 
-    } catch (error) {
+    } catch (error) {  console.log("Inside posts");
         console.log(error.message);
         res.status(500).send("Server Error");
     }
@@ -135,7 +134,7 @@ router.put('/like/:id', auth, async (req, res) => {
 
     await post.save();
 
-    return res.json(post.likes);
+   res.json(post.likes);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
@@ -180,6 +179,8 @@ router.post(
     check('text', 'Text is required').not().isEmpty()
   ],
   async (req, res) => {
+
+    console.log("Add commemt backend" )
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -200,7 +201,10 @@ router.post(
 
       await post.save();
 
+      console.log("Add commemt backend1213" )
+
       res.json(post.comments);
+      console.log("Add commemt backend 09988888" )
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -235,10 +239,10 @@ router.delete('/comment/:id/:comment_id', auth, async (req, res) => {
 
     await post.save();
 
-    return res.json(post.comments);
+    res.json(post.comments);
   } catch (err) {
     console.error(err.message);
-    return res.status(500).send('Server Error');
+    res.status(500).send('Server Error');
   }
 });
 
@@ -259,7 +263,7 @@ router.put('/like/:id', auth, async (req, res) => {
   
       await post.save();
   
-      return res.json(post.likes);
+      res.json(post.likes);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -286,7 +290,7 @@ router.put('/like/:id', auth, async (req, res) => {
   
       await post.save();
   
-      return res.json(post.likes);
+      res.json(post.likes);
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');
@@ -359,10 +363,10 @@ router.put('/like/:id', auth, async (req, res) => {
   
       await post.save();
   
-      return res.json(post.comments);
+      res.json(post.comments);
     } catch (err) {
       console.error(err.message);
-      return res.status(500).send('Server Error');
+      res.status(500).send('Server Error');
     }
   });
 
