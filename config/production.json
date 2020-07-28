@@ -2,6 +2,6 @@
     
     "mongoURI": "mongodb+srv://neel123:neel123@mycluster-lwezh.mongodb.net/test?retryWrites=true&w=majority",
     "jwttoken": "palakpanner",
-    "githubToken": "b724c0bf5cd8054353f2dace5186757682be787a"
+    "githubToken": "85840ee2285faee774b2b4cd92e546032c87230d"
    
 }
